@@ -1,0 +1,5 @@
+rootProject.name = 'ProjectEPM'
+include 'EPM-core'
+include 'common'
+include 'adapters:EPM-web'
+
