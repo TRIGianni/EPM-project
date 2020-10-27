@@ -24,16 +24,18 @@ public class TestAddEmployee {
     public void testAddSalariedEmployee() {
         //AddEmployeeSalariedValidating addEmployeeSalariedValidating = new AddEmployeeSalariedValidating(1, "Bob", "Home", "toto@gmail.com", 1500);
         AddSalariedEmployee addSalariedEmployee = new AddSalariedEmployee(employeeGateway);
+
         EmployeeSalariedValidating employeeSalariedValidating = new EmployeeSalariedValidating();
         employeeSalariedValidating.setEmpId(1);
         employeeSalariedValidating.setName("toto");
         employeeSalariedValidating.setAddress("rue de Mons");
         employeeSalariedValidating.setMail("toto@heh.be");
         employeeSalariedValidating.setMonthlySalary(1500);
+
         addSalariedEmployee.execute(employeeSalariedValidating);
 
         Employee e = employeeGateway.getEmployee(employeeSalariedValidating.getEmpId());
-        assertEquals("Bob", e.getName());
+        assertEquals("toto", e.getName());
 
         PaymentSchedule ps = e.getPaySchedule();
         assertTrue(ps instanceof MonthlyPaymentSchedule);

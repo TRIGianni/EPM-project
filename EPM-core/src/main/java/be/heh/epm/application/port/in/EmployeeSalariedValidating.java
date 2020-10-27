@@ -9,19 +9,28 @@ import javax.validation.constraints.NotNull;
 
 public class EmployeeSalariedValidating {
     @NotNull
-    @Getter @Setter
+    @Getter
+    @Setter
     private int empId;
-    @NotNull @NotEmpty
-    @Getter @Setter
+    @NotNull
+    @NotEmpty
+    @Getter
+    @Setter
     private String name;
-    @NotNull @NotEmpty
-    @Getter @Setter
+    @NotNull
+    @NotEmpty
+    @Getter
+    @Setter
     private String address;
-    @NotNull @NotEmpty
+    @NotNull
+    @NotEmpty
     @Email
-    @Getter @Setter
+    @Getter
+    @Setter
     private String mail;
     @NotNull
-    @Getter @Setter
+    @Getter
+    @Setter
     private double monthlySalary;
+
 }
