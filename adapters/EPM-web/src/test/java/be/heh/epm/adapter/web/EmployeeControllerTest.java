@@ -35,7 +35,7 @@ public class EmployeeControllerTest {
 
     }
     @Test
-    public void invalidatingDataReturn400() throws URISyntaxException, IOException, InterruptedException, JSONException {
+    public void errorInMailReturn400() throws URISyntaxException, IOException, InterruptedException, JSONException {
 
         HttpClient client = HttpClient.newHttpClient();
 
