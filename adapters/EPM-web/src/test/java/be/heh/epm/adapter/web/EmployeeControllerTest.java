@@ -1,12 +1,33 @@
 package be.heh.epm.adapter.web;
 
+import be.heh.epm.application.port.in.EmployeeSalariedValidating;
+import be.heh.epm.application.port.in.IAddSalariedEmployee;
+import be.heh.epm.application.service.AddSalariedEmployee;
+import be.heh.epm.domain.Employee;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.json.JSONObject;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,44 +37,66 @@ import java.net.http.HttpResponse;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
-@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@WebMvcTest(controllers = EmployeeController.class)
 public class EmployeeControllerTest {
+    @MockBean
+    private IAddSalariedEmployee addSalariedEmployee;
+    @Autowired
+    private MockMvc mockMvc;
+
     @Test
-    public void createReturn201() throws URISyntaxException, IOException, InterruptedException {
+    public void createReturn201() throws Exception {
 
-        HttpClient client = HttpClient.newHttpClient();
+        EmployeeSalariedValidating postEmployeeValidating = new EmployeeSalariedValidating();
+        postEmployeeValidating.setEmpId(1);
+        postEmployeeValidating.setName("toto");
+        postEmployeeValidating.setAddress("Rue de Mons");
+        postEmployeeValidating.setMail("toto@heh.be");
+        postEmployeeValidating.setMonthlySalary(1500);
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/employees/salaried"))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofFile(Paths.get("src/test/java/be/heh/epm/adapter/web/employeOK.json"))).build();
+        mockMvc.perform(post("/employees/salaried")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(postEmployeeValidating)))
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                .andExpect(status().isCreated())
+                .andExpect(header().string(HttpHeaders.LOCATION, "http://localhost/employees/salaried/1"));
 
-        assertEquals(201,response.statusCode());
 
+        //verify(addSalariedEmployee).execute(postEmployeeValidating);
 
     }
+
     @Test
-    public void errorInMailReturn400() throws URISyntaxException, IOException, InterruptedException, JSONException {
+    public void errorInMailReturn400() throws Exception {
 
-        HttpClient client = HttpClient.newHttpClient();
+        EmployeeSalariedValidating postEmployeeValidating = new EmployeeSalariedValidating();
+        postEmployeeValidating.setEmpId(1);
+        postEmployeeValidating.setName("toto");
+        postEmployeeValidating.setAddress("Rue de Mons");
+        postEmployeeValidating.setMail("totoheh.be"); //mail error
+        postEmployeeValidating.setMonthlySalary(1500);
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/employees/salaried"))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofFile(Paths.get("src/test/java/be/heh/epm/adapter/web/employeWrong.json"))).build();
+        MvcResult res = mockMvc.perform(post("/employees/salaried")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(postEmployeeValidating)))
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                .andExpect(status().isBadRequest())
+                .andReturn();
 
 
-        assertEquals(400,response.statusCode());
-
-        JSONObject jsonObject = new JSONObject(response.body());
+        JSONObject jsonObject = new JSONObject(res.getResponse().getContentAsString());
 
         JSONArray error = jsonObject.getJSONArray("errors");
-        assertEquals("mail : doit être une adresse électronique syntaxiquement correcte",error.getString(0));
+        assertEquals("mail : must be a well-formed email address", error.getString(0));
 
     }
 
+    static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

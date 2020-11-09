@@ -1,6 +1,7 @@
 package be.heh.epm.adapter.web;
 
 import be.heh.epm.application.port.in.EmployeeSalariedValidating;
+import be.heh.epm.application.port.in.IAddSalariedEmployee;
 import be.heh.epm.application.port.out.EmployeeGateway;
 import be.heh.epm.application.port.out.InMemoryEmployeeGateway;
 import be.heh.epm.application.service.AddSalariedEmployee;
@@ -22,8 +23,10 @@ public class EmployeeController {
     @PostMapping("/employees/salaried")
     ResponseEntity<Void> newEmployee(@Valid @RequestBody EmployeeSalariedValidating newEmployee) {
         EmployeeGateway employeeGateway = new InMemoryEmployeeGateway();
-        AddSalariedEmployee addSalariedEmployee = new AddSalariedEmployee(employeeGateway);
+        IAddSalariedEmployee addSalariedEmployee = new AddSalariedEmployee(employeeGateway);
+
         addSalariedEmployee.execute(newEmployee);
+
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")

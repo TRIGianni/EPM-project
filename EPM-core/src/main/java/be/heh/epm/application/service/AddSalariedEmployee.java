@@ -3,10 +3,11 @@ package be.heh.epm.application.service;
 
 import be.heh.epm.application.port.in.AddEmployeeSalariedValidating;
 import be.heh.epm.application.port.in.EmployeeSalariedValidating;
+import be.heh.epm.application.port.in.IAddSalariedEmployee;
 import be.heh.epm.application.port.out.EmployeeGateway;
 import be.heh.epm.domain.*;
 
-public class AddSalariedEmployee  {
+public class AddSalariedEmployee  implements IAddSalariedEmployee {
 
     private AddEmployeeSalariedValidating addEmployeeSalariedValidating;
     private EmployeeGateway employeeGateway;
