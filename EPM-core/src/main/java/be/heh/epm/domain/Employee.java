@@ -6,11 +6,11 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 public class Employee {
-    @Getter
+    @Getter @Setter
     private int empID;
     @Getter @Setter
     private String name;
-    @Getter
+    @Getter @Setter
     private String address;
     @Getter @Setter
     private String mail;
@@ -21,12 +21,21 @@ public class Employee {
     @Getter @Setter
     private PaymentSchedule paySchedule;
 
+    public Employee(){}
+
     public Employee(int empID, String name, String address, String mail) {
         this.empID = empID;
         this.name = name;
         this.address = address;
         this.mail = mail;
     }
+
+    public Employee(String name, String address, String mail) {
+        this.name = name;
+        this.address = address;
+        this.mail = mail;
+    }
+
 
     public void payDay(PayCheck pc) {
         double salary = getPayClassification().calculatePay(pc);

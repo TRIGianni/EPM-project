@@ -8,7 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class EmployeeSalariedValidating {
-    @NotNull
+    //@NotNull
     @Getter
     @Setter
     private int empId;

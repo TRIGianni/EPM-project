@@ -2,10 +2,8 @@ package be.heh.epm.adapter.web;
 
 import be.heh.epm.application.port.in.EmployeeSalariedValidating;
 import be.heh.epm.application.port.in.IAddSalariedEmployee;
-import be.heh.epm.application.port.out.EmployeeGateway;
-import be.heh.epm.application.port.out.InMemoryEmployeeGateway;
+import be.heh.epm.application.port.out.EmployeePort;
 import be.heh.epm.application.service.AddSalariedEmployee;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +20,8 @@ public class EmployeeController {
     @CrossOrigin
     @PostMapping("/employees/salaried")
     ResponseEntity<Void> newEmployee(@Valid @RequestBody EmployeeSalariedValidating newEmployee) {
-        EmployeeGateway employeeGateway = new InMemoryEmployeeGateway();
-        IAddSalariedEmployee addSalariedEmployee = new AddSalariedEmployee(employeeGateway);
+        EmployeePort employeePort = new InMemoryEmployeePort();
+        IAddSalariedEmployee addSalariedEmployee = new AddSalariedEmployee(employeePort);
 
         addSalariedEmployee.execute(newEmployee);
 

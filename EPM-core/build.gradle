@@ -25,4 +25,6 @@ dependencies {
 
     compile 'org.apache.tomcat.embed:tomcat-embed-el:9.0.33'
 
+
+    compile 'org.springframework.boot:spring-boot-starter-test:2.3.5.RELEASE'
 }

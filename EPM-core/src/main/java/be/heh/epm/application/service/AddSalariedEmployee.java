@@ -4,16 +4,16 @@ package be.heh.epm.application.service;
 import be.heh.epm.application.port.in.AddEmployeeSalariedValidating;
 import be.heh.epm.application.port.in.EmployeeSalariedValidating;
 import be.heh.epm.application.port.in.IAddSalariedEmployee;
-import be.heh.epm.application.port.out.EmployeeGateway;
+import be.heh.epm.application.port.out.EmployeePort;
 import be.heh.epm.domain.*;
 
 public class AddSalariedEmployee  implements IAddSalariedEmployee {
 
     private AddEmployeeSalariedValidating addEmployeeSalariedValidating;
-    private EmployeeGateway employeeGateway;
+    private EmployeePort employeePort;
 
-    public AddSalariedEmployee(EmployeeGateway employeeGateway) {
-        this.employeeGateway = employeeGateway;
+    public AddSalariedEmployee(EmployeePort employeePort) {
+        this.employeePort = employeePort;
     }
 
     public void execute(EmployeeSalariedValidating EmployeeSalariedValidating) {
@@ -26,7 +26,7 @@ public class AddSalariedEmployee  implements IAddSalariedEmployee {
         e.setPaySchedule(ps);
         e.setPayMethod(pm);
 
-        employeeGateway.save(EmployeeSalariedValidating.getEmpId(),e);
+        employeePort.save(e);
 
     }
 

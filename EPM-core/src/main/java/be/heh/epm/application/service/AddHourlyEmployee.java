@@ -1,7 +1,7 @@
 package be.heh.epm.application.service;
 
 
-import be.heh.epm.application.port.out.EmployeeGateway;
+import be.heh.epm.application.port.out.EmployeePort;
 import be.heh.epm.domain.MonthlyPaymentSchedule;
 import be.heh.epm.domain.PaymentClassification;
 import be.heh.epm.domain.PaymentSchedule;
@@ -11,7 +11,7 @@ public class AddHourlyEmployee {
 
     private double monthlySalary;
 
-    public AddHourlyEmployee(int empId, String name, String address, String mail, double monthlySalary, EmployeeGateway employeeGateway) {
+    public AddHourlyEmployee(int empId, String name, String address, String mail, double monthlySalary, EmployeePort employeePort) {
         this.monthlySalary = monthlySalary;
     }
 
