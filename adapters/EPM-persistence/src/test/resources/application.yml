@@ -12,6 +12,11 @@ spring:
     driverClassName: org.h2.Driver
     schema:
       - CreateTables.sql
+
+  output:
+    ansi:
+      enabled: always
 logging:
   file:
     name: epm-debug.log
+

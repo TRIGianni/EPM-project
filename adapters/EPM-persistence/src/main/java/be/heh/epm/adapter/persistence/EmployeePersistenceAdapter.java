@@ -43,8 +43,10 @@ public class EmployeePersistenceAdapter implements EmployeePort {
                         e.setMail(rs.getString("MAIL"));
                         return e;
                     });
+            logger.info("Recovery of the employee by id {} in the database",empID);
             return employee;
         } catch (EmptyResultDataAccessException e) {
+            logger.error("Employee with id {} was not found",empID);
             return null;
         }
     }
