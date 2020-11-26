@@ -1,52 +1,35 @@
 package be.heh.epm.adapter.web;
 
 import be.heh.epm.application.port.in.EmployeeSalariedValidating;
-import be.heh.epm.application.port.in.IAddSalariedEmployee;
-import be.heh.epm.application.service.AddSalariedEmployee;
-import be.heh.epm.domain.Employee;
+import be.heh.epm.application.port.in.AddSalariedEmployeeUseCase;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.json.JSONObject;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.nio.file.Paths;
-import java.util.HashMap;
-
-@ExtendWith(SpringExtension.class)
+//@ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = EmployeeController.class)
 public class EmployeeControllerTest {
-    @MockBean
-    private IAddSalariedEmployee addSalariedEmployee;
+
+    private AddSalariedEmployeeUseCase addSalariedEmployee;
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     public void createReturn201() throws Exception {
+        addSalariedEmployee = mock(AddSalariedEmployeeUseCase.class);
 
         EmployeeSalariedValidating postEmployeeValidating = new EmployeeSalariedValidating();
         postEmployeeValidating.setEmpId(1);
@@ -60,6 +43,7 @@ public class EmployeeControllerTest {
                 .content(asJsonString(postEmployeeValidating)))
 
                 .andExpect(status().isCreated())
+
                 .andExpect(header().string(HttpHeaders.LOCATION, "http://localhost/employees/salaried/1"));
 
 

@@ -1,7 +1,10 @@
 package be.heh.epm.domain;
 
+import lombok.Getter;
+
 public class SalariedClassification implements PaymentClassification{
 
+    @Getter
     private double salary;
 
     public SalariedClassification(double salary) {
@@ -13,8 +16,8 @@ public class SalariedClassification implements PaymentClassification{
         return salary;
     }
 
-    @Override
-    public String getType() {
+    public String toString(){
         return "salaried";
     }
+
 }

@@ -14,9 +14,8 @@ public class DirectDepositMethod implements PaymentMethod {
         this.accountNumber = accountNumber;
     }
 
-    @Override
     public String toString(){
-        return String.format("direct deposit into %s : %s", bank,accountNumber);
+        return "direct";
     }
 
     @Override
@@ -24,8 +23,4 @@ public class DirectDepositMethod implements PaymentMethod {
         payCheck.setField("Disposition","Bank");
     }
 
-    @Override
-    public String getType() {
-        return "direct";
-    }
 }

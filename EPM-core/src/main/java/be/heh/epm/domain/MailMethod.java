@@ -21,10 +21,6 @@ public class MailMethod implements PaymentMethod {
         payCheck.setField("Disposition","Mail");
     }
 
-    @Override
-    public String getType() {
-        return "mail";
-    }
 
 
 }

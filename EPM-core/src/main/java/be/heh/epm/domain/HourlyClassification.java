@@ -27,10 +27,10 @@ public class HourlyClassification implements PaymentClassification {
         return totalPay;
     }
 
-    @Override
+   /* @Override
     public String getType() {
         return "hourly";
-    }
+    }*/
 
     private boolean isInPayPeriod(TimeCard card, LocalDate payPeriod) {
         LocalDate payPeriodEndDate = payPeriod;
@@ -54,4 +54,8 @@ public class HourlyClassification implements PaymentClassification {
         return straightTime*hourlyRate + overtime*hourlyRate*1.5;
     }
 
+    @Override
+    public String toString(){
+        return "hourly";
+    }
 }

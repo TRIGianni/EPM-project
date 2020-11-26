@@ -28,7 +28,7 @@ dependencies {
 
     }
     implementation project(':EPM-core')
-
+    implementation project(':common')
 
 }
 

@@ -4,5 +4,4 @@ public interface PaymentClassification {
 
     double calculatePay(PayCheck paycheck);
 
-    String getType();
 }

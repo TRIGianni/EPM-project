@@ -1,7 +1,10 @@
 package be.heh.epm.adapter.persistence;
 
 import be.heh.epm.application.port.out.EmployeePort;
+import be.heh.epm.domain.DirectDepositMethod;
 import be.heh.epm.domain.Employee;
+import be.heh.epm.domain.MonthlyPaymentSchedule;
+import be.heh.epm.domain.SalariedClassification;
 import com.github.database.rider.core.api.connection.ConnectionHolder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -9,14 +12,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.sql.DataSource;
 
+@Profile("dev")
 @SpringBootTest
 public class EmployeePersistenceAdapterTest {
+
 
     @Autowired
     private DataSource dataSource;
@@ -25,12 +31,15 @@ public class EmployeePersistenceAdapterTest {
     private EmployeePersistenceAdapter employeePersistenceAdapter;
 
     @Test
-    void testSave() {
+    void SalariedEmployeeSaveTest() {
         //JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         //employeePersistenceAdapter = new EmployeePersistenceAdapter(jdbcTemplate,dataSource);
-        Employee employee = new Employee("toto", "rue de Mons", "toto@heh.be");
+        Employee salariedEmployee = new Employee("toto", "rue de Mons", "toto@heh.be");
+        salariedEmployee.setPayClassification(new SalariedClassification(1500));
+        salariedEmployee.setPayMethod(new DirectDepositMethod("ING","BE5555555555"));
+        salariedEmployee.setPaySchedule(new MonthlyPaymentSchedule());
 
-        Employee SavedEmployee = employeePersistenceAdapter.save(employee);
+        Employee SavedEmployee = employeePersistenceAdapter.save(salariedEmployee);
 
         Assertions.assertEquals("toto", SavedEmployee.getName());
         Assertions.assertEquals("rue de Mons", SavedEmployee.getAddress());

@@ -11,10 +11,10 @@ public class MonthlyPaymentSchedule implements PaymentSchedule {
         return isLastDayOfMonth(date);
     }
 
-    @Override
+   /* @Override
     public String getType() {
         return "monthly";
-    }
+    }*/
 
     private boolean isLastDayOfMonth(LocalDate date) {
 
@@ -23,6 +23,10 @@ public class MonthlyPaymentSchedule implements PaymentSchedule {
 
     private LocalDate getLastDayOfMonth(LocalDate date) {
         return date.with(TemporalAdjusters.lastDayOfMonth());
+    }
+
+    public String toString(){
+        return "monthly";
     }
 
 }

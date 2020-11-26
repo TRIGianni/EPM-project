@@ -1,26 +1,27 @@
 package be.heh.epm.application.service;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.refEq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import be.heh.epm.application.port.in.AddSalariedEmployeeUseCase;
 import be.heh.epm.application.port.in.EmployeeSalariedValidating;
 import be.heh.epm.application.port.out.EmployeePort;
 import be.heh.epm.domain.*;
 
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class TestAddEmployee {
-    @MockBean
-    private EmployeePort employeePort = mock(EmployeePort.class);
-    @MockBean
-    private Employee employee = mock(Employee.class);;
+
+    private EmployeePort employeePort = Mockito.mock(EmployeePort.class);
+    private Employee employee = Mockito.mock(Employee.class);
 
    /* @Before
     public void setUp() {
@@ -31,7 +32,7 @@ public class TestAddEmployee {
     public void testAddSalariedEmployee() {
 
         //AddEmployeeSalariedValidating addEmployeeSalariedValidating = new AddEmployeeSalariedValidating(1, "Bob", "Home", "toto@gmail.com", 1500);
-        AddSalariedEmployee addSalariedEmployee = new AddSalariedEmployee(employeePort);
+        AddSalariedEmployeeUseCase addSalariedEmployee = new AddSalariedEmployeeService(employeePort);
 
         EmployeeSalariedValidating employeeSalariedValidating = new EmployeeSalariedValidating();
         employeeSalariedValidating.setEmpId(1);
@@ -42,7 +43,7 @@ public class TestAddEmployee {
 
         addSalariedEmployee.execute(employeeSalariedValidating);
 
-        //verify(employeeGateway).save(1,employee);
+        verify(employeePort).save(refEq(employee));
 
         /*Employee e = employeeGateway.getEmployee(employeeSalariedValidating.getEmpId());
         assertEquals("toto", e.getName());

@@ -3,6 +3,7 @@ package be.heh.epm.adapter.persistence;
 import be.heh.epm.application.port.out.EmployeePort;
 import be.heh.epm.common.PersistenceAdapter;
 import be.heh.epm.domain.Employee;
+import be.heh.epm.domain.SalariedClassification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -21,13 +22,16 @@ public class EmployeePersistenceAdapter implements EmployeePort {
     private static final Logger logger = LoggerFactory.getLogger(EmployeePersistenceAdapter.class);
 
     private final JdbcTemplate jdbcTemplate;
-    private final SimpleJdbcInsert simpleJdbcInsert;
+    private final SimpleJdbcInsert simpleJdbcInsertEmployee;
+    private final SimpleJdbcInsert simpleJdbcInsertSalariedClassification;
+    private final DataSource dataSource;
 
     public EmployeePersistenceAdapter(JdbcTemplate jdbcTemplate, DataSource dataSource) {
         this.jdbcTemplate = jdbcTemplate;
-
-        this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("EMPLOYEE")
-                .usingGeneratedKeyColumns("EMPID");
+        this.dataSource = dataSource;
+        this.simpleJdbcInsertEmployee = new SimpleJdbcInsert(dataSource).withTableName("employee")
+                .usingGeneratedKeyColumns("empid");
+        this.simpleJdbcInsertSalariedClassification = new SimpleJdbcInsert(dataSource).withTableName("salariedclassification");
     }
 
     @Override
@@ -55,16 +59,30 @@ public class EmployeePersistenceAdapter implements EmployeePort {
     public Employee save(Employee employee) {
 
         Map<String, Object> parameters = new HashMap<>(1);
-        parameters.put("NAME", employee.getName());
-        parameters.put("ADDRESS", employee.getAddress());
-        parameters.put("MAIL", employee.getMail());
+        parameters.put("name", employee.getName());
+        parameters.put("address", employee.getAddress());
+        parameters.put("mail", employee.getMail());
+        parameters.put("paymentclassificationtype",employee.getPayClassification().toString());
+        parameters.put("paymentmethodtype",employee.getPayMethod().toString());
+        parameters.put("paymentscheduletype",employee.getPaySchedule().toString());
 
         // Execute the query and get the generated key
-        Number newId = simpleJdbcInsert.executeAndReturnKey(parameters);
+        Number newId = simpleJdbcInsertEmployee.executeAndReturnKey(parameters);
 
         logger.info("Inserting salaried employee into database, generated key is: {}", newId);
 
         employee.setEmpID((Integer) newId);
+
+        if(employee.getPayClassification().toString()=="salaried"){
+            Map<String, Object> parametersSalariedClassification = new HashMap<>(1);
+            parametersSalariedClassification.put("EMPID", employee.getEmpID());
+            SalariedClassification salariedClassification = (SalariedClassification)employee.getPayClassification();
+            parametersSalariedClassification.put("MOUNT", salariedClassification.getSalary());
+            simpleJdbcInsertSalariedClassification.execute(parametersSalariedClassification);
+
+        }
+
+
 
         return employee;
     }
