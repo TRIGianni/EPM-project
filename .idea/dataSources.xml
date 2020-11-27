@@ -13,5 +13,11 @@
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5432/postgres</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="Heroku" uuid="3fa94b4c-8024-45a2-8a0e-e36c7b0fcce7">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://ec2-54-247-107-109.eu-west-1.compute.amazonaws.com:5432/ddu1mv24epc68b</jdbc-url>
+    </data-source>
   </component>
 </project>
