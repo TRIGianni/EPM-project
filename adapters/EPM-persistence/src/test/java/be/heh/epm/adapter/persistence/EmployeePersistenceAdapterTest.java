@@ -6,6 +6,7 @@ import be.heh.epm.domain.Employee;
 import be.heh.epm.domain.MonthlyPaymentSchedule;
 import be.heh.epm.domain.SalariedClassification;
 import com.github.database.rider.core.api.connection.ConnectionHolder;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,6 +31,7 @@ public class EmployeePersistenceAdapterTest {
     @Autowired
     private EmployeePersistenceAdapter employeePersistenceAdapter;
 
+    @Ignore
     @Test
     void SalariedEmployeeSaveTest() {
         //JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
