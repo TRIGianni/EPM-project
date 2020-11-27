@@ -20,7 +20,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.sql.DataSource;
 
-@Profile("dev")
 @SpringBootTest
 public class EmployeePersistenceAdapterTest {
 
@@ -31,24 +30,26 @@ public class EmployeePersistenceAdapterTest {
     @Autowired
     private EmployeePersistenceAdapter employeePersistenceAdapter;
 
-    @Ignore
     @Test
     void SalariedEmployeeSaveTest() {
         //JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         //employeePersistenceAdapter = new EmployeePersistenceAdapter(jdbcTemplate,dataSource);
         Employee salariedEmployee = new Employee("toto", "rue de Mons", "toto@heh.be");
         salariedEmployee.setPayClassification(new SalariedClassification(1500));
-        salariedEmployee.setPayMethod(new DirectDepositMethod("ING","BE5555555555"));
+        salariedEmployee.setPayMethod(new DirectDepositMethod("ING", "BE5555555555"));
         salariedEmployee.setPaySchedule(new MonthlyPaymentSchedule());
+        try {
+            Employee SavedEmployee = employeePersistenceAdapter.save(salariedEmployee);
+            Assertions.assertEquals("toto", SavedEmployee.getName());
+            Assertions.assertEquals("rue de Mons", SavedEmployee.getAddress());
 
-        Employee SavedEmployee = employeePersistenceAdapter.save(salariedEmployee);
+            Employee loadedEmployee = employeePersistenceAdapter.getEmployee(SavedEmployee.getEmpID());
+            Assertions.assertEquals("toto", loadedEmployee.getName(), "Employee name does not match");
+            Assertions.assertEquals("toto@heh.be", loadedEmployee.getMail(), "Employee mail does not match");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
-        Assertions.assertEquals("toto", SavedEmployee.getName());
-        Assertions.assertEquals("rue de Mons", SavedEmployee.getAddress());
-
-        Employee loadedEmployee = employeePersistenceAdapter.getEmployee(SavedEmployee.getEmpID());
-        Assertions.assertEquals("toto", loadedEmployee.getName(), "Employee name does not match");
-        Assertions.assertEquals("toto@heh.be", loadedEmployee.getMail(), "Employee mail does not match");
     }
 
 }
