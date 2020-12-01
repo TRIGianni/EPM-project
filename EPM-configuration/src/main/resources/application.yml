@@ -3,7 +3,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: xmipemaxgrzjcy
     password: 347c54aa4f890e14d3f40fed98bcd782fef7f987c4809976a0fc7035e90f2036
-    url: jdbc:postgres://xmipemaxgrzjcy:347c54aa4f890e14d3f40fed98bcd782fef7f987c4809976a0fc7035e90f2036@ec2-54-247-107-109.eu-west-1.compute.amazonaws.com:5432/ddu1mv24epc68b
+    url: jdbc:postgresql://ec2-54-247-107-109.eu-west-1.compute.amazonaws.com:5432/ddu1mv24epc68b?user=xmipemaxgrzjcy&password=347c54aa4f890e14d3f40fed98bcd782fef7f987c4809976a0fc7035e90f2036
     platform: postgres
     initialization-mode: always
     continue-on-error: true
