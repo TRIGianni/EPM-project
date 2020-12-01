@@ -10,7 +10,6 @@
         </processorPath>
         <module name="ProjectEPM.EPM-core.test" />
         <module name="ProjectEPM.EPM-core.main" />
-        <module name="ProjectEPM.adapters.EPM-web.main" />
       </profile>
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
